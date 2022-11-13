@@ -1,0 +1,5 @@
+It is better to use the waiting-approach.
+The not-waiting approach (or active waiting) will use more CPU time since the
+thread keeps checking the condition in a loop.
+When using the waiting approach, the thread goes to sleep until it is
+notified, which saves CPU time.
