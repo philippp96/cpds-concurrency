@@ -10,7 +10,9 @@ public class Savage extends Thread {
 				Thread.sleep(200);
 				pot.getserving();
 			}
-			catch(InterruptedException e) {};
+			catch(InterruptedException e) {
+				System.out.println(e.getMessage());
+			};
 		}
 	}
 }

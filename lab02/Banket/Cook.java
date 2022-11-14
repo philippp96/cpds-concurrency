@@ -13,7 +13,9 @@ public class Cook extends Thread {
 				Thread.sleep(200);
 				pot.fillpot();
 			}
-			catch(InterruptedException e) {};
+			catch(InterruptedException e) {
+				System.out.println(e.getMessage());
+			};
 		}
 	}
 }

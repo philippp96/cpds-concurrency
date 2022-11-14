@@ -34,7 +34,7 @@ public class Pot {
 			wait();
 		}
 		servings = capacity;
-		System.out.println("cook fills the pot");
+		System.out.println("cook fills the pot to " + servings);
 		// wake up threads in Waiting Set in order to asure that the next savage will run
 		print_servings();
 		notifyAll();

@@ -1,7 +1,7 @@
 public class PotNoWait {
 
 	private int servings = 0;
-	private int capacity;
+	private final int capacity;
 
 	public PotNoWait(int capacity) {
 		this.capacity = capacity;
