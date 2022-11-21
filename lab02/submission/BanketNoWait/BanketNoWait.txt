@@ -1,5 +1,6 @@
-It is better to use the waiting-approach.
-The not-waiting approach (or active waiting) will use more CPU time since the
-thread keeps checking the condition in a loop.
-When using the waiting approach, the thread goes to sleep until it is
-notified, which saves CPU time.
+It is better to use the waiting-approach, which is the BanketNoWait module.
+The Banket module uses the not-waiting approach (or active waiting/ busy waiting) which will use more CPU time since the
+thread keeps checking the condition in a loop. Effectively this is a blocking pattern, and in general should be avoided
+as a technique when a resource is expecting input or access to a lock.
+When using the waiting approach, the thread goes to sleep until it is notified using the Java call `Thread.sleep(200);`
+which saves CPU time. This allows the processor to be used to execute a different task instead of being wasted on useless activity.

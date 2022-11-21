@@ -1,15 +1,16 @@
 public class Account {
 
-	private final int N;
+	// known as N in our LST
+	private final int transactionLimit;
 	private int balance = 0;
 
 	public Account(int N) {
-		this.N = N;
+		this.transactionLimit = N;
 	}
 
 	public synchronized void withdraw(int amount) throws InterruptedException {
 		while (amount > balance) {
-			System.out.println(Thread.currentThread().getName() + " has to wait");
+			System.out.println(Thread.currentThread().getName() + " has to wait to withdraw, insufficient funds");
 			wait();
 		}
 		System.out.println(Thread.currentThread().getName()+ " withdraws " + amount);
@@ -24,12 +25,11 @@ public class Account {
 		print_balance();
 	}
 
-	//only for trace purposes
 	public synchronized void print_balance() {
 		System.out.println("balance: " + balance);
 	}
 
-	public int getN() {
-		return this.N;
+	public int getTransactionLimit() {
+		return this.transactionLimit;
 	}
 }

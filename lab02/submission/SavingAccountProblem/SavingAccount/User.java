@@ -18,7 +18,7 @@ public abstract class User extends Thread {
 					acc.deposit(amount);
 				}
 			} catch(InterruptedException e) {
-
+				System.out.println(e.getMessage());
 			}
 		}
 	}
@@ -26,6 +26,6 @@ public abstract class User extends Thread {
 	protected abstract String getNextAction();
 
 	private int getNextAmount() {
-		return ThreadLocalRandom.current().nextInt(0, acc.getN() + 1);
+		return ThreadLocalRandom.current().nextInt(0, acc.getTransactionLimit() + 1);
 	}
 }
