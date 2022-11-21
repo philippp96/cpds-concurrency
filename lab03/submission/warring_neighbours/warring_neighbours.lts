@@ -29,4 +29,16 @@ progress ENTER1 = {n1.enter}
 progress ENTER2 = {n2.enter}
 
 ||FIELD = (n1:NEIGHBOR1 || n2:NEIGHBOR2 || {n1,n2}::FLAGS || MUTEX).
+
 ||GREEDY = FIELD << {n1.flag1.setTrue, n2.flag2.setTrue}.
+
+/*
+ * The greediness of neighbors triggers a violation of both progress properties.
+ * Due to the priority, first both flags are set to True.
+ * As a consequence, at least one of the neighbors sets his flag to False.
+ * However, as soon as this has happened, the setTrue action is eligible, and since it is prioritized, it is immediately performed.
+ * 
+ * More formally: There is an invariant in the state of the system: At any time, either (a) bothflags are set to true, or (b) a setTrue action is eligible and has to be performed.
+ * For any of the enter-actions to be performed, the flag{1,2}[False] action has to be performed. In case (a) this is obviously not possible because both flags are set to True.
+ * In case (b), even if the flag{1,2}[False] action is eligible, first the setTrue actions are performed exhaustively, leading back to case (a).
+[] */
