@@ -1,0 +1,29 @@
+const False = 0
+const True = 1
+
+const RMAX = 2
+const FMAX = 2
+
+range Bool = False..True
+range R = 1..RMAX
+range F = 1..FMAX
+
+FLIGHT = (request.runway -> WAIT),
+WAIT = (free.runway[i:R] -> take.off.done[i] -> FLIGHT).
+
+
+CONTROL_RUNWAY = CONTROL_RUNWAY[True],
+CONTROL_RUNWAY[free:Bool] = (
+	when(free == True) f[F].free.runway -> CONTROL_RUNWAY[False] |
+	when(free == False) f[F].take.off.done -> CONTROL_RUNWAY[True]
+).
+
+||CONTROL = (r[r:R]:CONTROL_RUNWAY).
+
+
+||AIRPORT = ( f[F]:FLIGHT || CONTROL  || MUTUAL_EXCLUSION) / {r[r:R].f[f:F].free.runway / f[f].free.runway[r] , r[r:R].f[f:F].take.off.done / f[f].take.off.done[r]}.
+
+
+property MUTUAL_EXCLUSION = MUT_EX[0][0],
+MUT_EX[c1:0..1][c2:0..1] = ( r[1].f[F].free.runway -> MUT_EX[c1+1][c2] | when(c1 > 0) r[1].f[F].take.off.done -> MUT_EX[c1-1][c2] | r[2].f[F].free.runway -> MUT_EX[c1][c2+1] | when(c2 > 0) r[2].f[F].take.off.done -> MUT_EX[c1][c2-1] ).
+
