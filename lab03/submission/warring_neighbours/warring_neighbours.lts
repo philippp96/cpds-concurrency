@@ -25,4 +25,8 @@ property MUTEX = ( n1.enter -> LOCKED1 | n2.enter -> LOCKED2 ),
 LOCKED1 = (n1.leave -> MUTEX),
 LOCKED2 = (n2.leave -> MUTEX).
 
+progress ENTER1 = {n1.enter} 
+progress ENTER2 = {n2.enter}
+
 ||FIELD = (n1:NEIGHBOR1 || n2:NEIGHBOR2 || {n1,n2}::FLAGS || MUTEX).
+||GREEDY = FIELD << {n1.flag1.setTrue, n2.flag2.setTrue}.
