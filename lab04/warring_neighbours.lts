@@ -39,14 +39,6 @@ TEST = (flag1[raised:Bool] -> if (raised)
 	) + {{flag1,flag2}.BoolActions, card.CardActions}.
 
 
-/*
-NEIGHBOR1 = (flag1.setTrue -> TEST),
-
-TEST = (flag2[raised:Bool] -> if (raised) then (flag1.setFalse -> NEIGHBOR1) else (enter -> leave -> flag1.setFalse -> NEIGHBOR1) ) + {{flag1,flag2}.BoolActions, {card1, card2}.CardActions}.
-
-NEIGHBOR2 = (flag2.setTrue -> TEST),
-TEST = (flag1[raised:Bool] -> if (raised) then (flag2.setFalse -> NEIGHBOR2) else (enter -> leave -> flag2.setFalse -> NEIGHBOR2) ) + {{flag1,flag2}.BoolActions, {card1, card2}.CardActions}.
-*/
 
 property MUTEX = ( n1.enter -> LOCKED1 | n2.enter -> LOCKED2 ),
 LOCKED1 = (n1.leave -> MUTEX),
