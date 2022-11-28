@@ -1,0 +1,61 @@
+const False = 0
+const True = 1
+
+range Bool = False..True
+range Card = 1..2
+
+set CardActions = {set1,set2,[1],[2]}
+
+CARDVAR = VAL[1],
+VAL[i:Card] = ( set1 -> VAL[1] | set2 -> VAL[2] | [i] -> VAL[i] ).
+
+
+set BoolActions = {setTrue, setFalse, [False], [True]}
+
+BOOLVAR = VAL[False],
+VAL[v:Bool] = (
+	setTrue -> VAL[True]
+	| setFalse -> VAL[False]
+	| [v] -> VAL[v]
+).
+
+||FLAGS = (flag1:BOOLVAR || flag2:BOOLVAR).
+
+
+NEIGHBOR1 = (flag1.setTrue -> card.set2 -> TEST),
+TEST = (flag2[raised:Bool] -> if (raised)
+	then 
+		(card[1] -> enter -> leave -> flag1.setFalse -> NEIGHBOR1)
+	else
+		(enter -> leave -> flag1.setFalse -> NEIGHBOR1)
+	) + {{flag1,flag2}.BoolActions, card.CardActions}.
+
+NEIGHBOR2 = (flag2.setTrue -> card.set1 -> TEST),
+TEST = (flag1[raised:Bool] -> if (raised)
+	then 
+		(card[2] -> enter -> leave -> flag2.setFalse -> NEIGHBOR2)
+	else
+		(enter -> leave -> flag2.setFalse -> NEIGHBOR2)
+	) + {{flag1,flag2}.BoolActions, card.CardActions}.
+
+
+/*
+NEIGHBOR1 = (flag1.setTrue -> TEST),
+
+TEST = (flag2[raised:Bool] -> if (raised) then (flag1.setFalse -> NEIGHBOR1) else (enter -> leave -> flag1.setFalse -> NEIGHBOR1) ) + {{flag1,flag2}.BoolActions, {card1, card2}.CardActions}.
+
+NEIGHBOR2 = (flag2.setTrue -> TEST),
+TEST = (flag1[raised:Bool] -> if (raised) then (flag2.setFalse -> NEIGHBOR2) else (enter -> leave -> flag2.setFalse -> NEIGHBOR2) ) + {{flag1,flag2}.BoolActions, {card1, card2}.CardActions}.
+*/
+
+property MUTEX = ( n1.enter -> LOCKED1 | n2.enter -> LOCKED2 ),
+LOCKED1 = (n1.leave -> MUTEX),
+LOCKED2 = (n2.leave -> MUTEX).
+
+progress ENTER1 = {n1.enter} 
+progress ENTER2 = {n2.enter}
+
+||FIELD = (n1:NEIGHBOR1 || n2:NEIGHBOR2 || {n1,n2}::FLAGS || {n1,n2}::card:CARDVAR || MUTEX).
+
+||GREEDY = FIELD << {n1.flag1.setTrue, n2.flag2.setTrue}.
+
